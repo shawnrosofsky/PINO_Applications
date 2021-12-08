@@ -1,0 +1,40 @@
+data:
+  name: 'myBurgers'
+  datapath: 'data/myBurger.mat'
+  total_num: 500
+  offset: 0
+  n_sample: 450
+  nx: 129
+  nt: 100
+  sub: 1
+  sub_t: 1
+
+model:
+  layers: [16, 24, 24, 32, 32]
+  modes1: [15, 12, 9, 9]
+  modes2: [15, 12, 9, 9]
+  fc_dim: 128
+  activation: gelu
+
+train:
+  batchsize: 20
+  epochs: 500
+  milestones: [150, 300, 450]
+  # milestones: [300, 600, 900]
+  base_lr: 0.001
+  scheduler_gamma: 0.5
+  ic_loss: 10.0
+  f_loss: 1.0
+  xy_loss: 1.0
+  # xy_loss: 0.0
+  save_dir: 'burgers'
+  save_name: 'myburgers-eqn-0001.pt'
+
+log:
+  project: 'PINO-myburgers'
+  group: 'gelu-eqn'
+
+
+test:
+  batchsize: 1
+  ckpt: 'checkpoints/burgers/myburgers-eqn-0001.pt'

@@ -1,0 +1,43 @@
+data:
+  name: 'Wave-0000'
+  # datapath: 'data/Burger.mat'
+  total_num: 1000
+  # offset: 4500
+  # n_sample: 500
+  n_train: 900
+  n_test: 100
+  nx: 4096
+  nt: 100
+  sub: 32
+  sub_t: 1
+  c: 1.0
+
+model:
+  layers: [16, 24, 24, 32, 32]
+  modes1: [15, 12, 9, 9]
+  modes2: [15, 12, 9, 9]
+  fc_dim: 128
+  activation: gelu
+
+train:
+  batchsize: 20
+  epochs: 500
+  # milestones: [150, 250, 350, 450, 550, 650, 750, 850, 950]
+  milestones: [150, 300, 450]
+  base_lr: 0.001
+  scheduler_gamma: 0.5
+  ic_loss: 10.0
+  f_loss: 1.0
+  xy_loss: 1.0
+  save_dir: 'Wave'
+  save_name: 'Wave-eqn.pt'
+  ckpt: 'checkpoints/Wave/Wave-eqn.pt'
+  ckpt_freq: 100
+
+log:
+  project: 'PINO-Wave'
+  group: 'Wave-0000'
+
+test:
+  batchsize: 1
+  ckpt: 'checkpoints/Wave/Wave-eqn.pt'
