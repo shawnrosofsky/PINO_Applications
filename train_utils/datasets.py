@@ -1,5 +1,6 @@
 import scipy.io
 import numpy as np
+import mat73
 
 try:
     from pyDOE import lhs
@@ -42,7 +43,10 @@ class MatReader(object):
         self._load_file()
 
     def _load_file(self):
-        self.data = scipy.io.loadmat(self.file_path)
+        try:
+            self.data = scipy.io.loadmat(self.file_path)
+        except:
+            self.data = mat73.loadmat(self.file_path)
         self.old_mat = True
 
     def load_file(self, file_path):
@@ -81,14 +85,17 @@ class BurgersLoader(object):
     def __init__(self, datapath, nx=2 ** 10, nt=100, sub=8, sub_t=1, new=False):
         dataloader = MatReader(datapath)
         self.sub = sub
-        self.sub_t = sub_t
+        self.sub_t = sub_t            
         self.s = nx // sub
+        if (self.s % 2) == 1:
+            self.s = self.s - 1
         self.T = nt // sub_t
         self.new = new
         if new:
             self.T += 1
-        self.x_data = dataloader.read_field('input')[:, ::sub]
-        self.y_data = dataloader.read_field('output')[:, ::sub_t, ::sub]
+        
+        self.x_data = dataloader.read_field('input')[:, 0:self.s:sub]
+        self.y_data = dataloader.read_field('output')[:, ::sub_t, 0:self.s:sub]
 
     def make_loader(self, n_sample, batch_size, start=0, train=True):
         Xs = self.x_data[start:start + n_sample]
