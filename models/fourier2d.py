@@ -11,7 +11,8 @@ class FNN2d(nn.Module):
                  width=64, fc_dim=128,
                  layers=None,
                  in_dim=3, out_dim=1,
-                 activation='tanh'):
+                 activation='tanh',
+                 pad_x=0, pad_y=0):
         super(FNN2d, self).__init__()
 
         """
@@ -30,6 +31,9 @@ class FNN2d(nn.Module):
         self.modes1 = modes1
         self.modes2 = modes2
         self.width = width
+        self.in_dim = in_dim
+        self.out_dim = out_dim
+        self.padding = (0, 0, 0, pad_y, 0, pad_x)
         # input channel is 3: (a(x, y), x, y)
         if layers is None:
             self.layers = [width] * 4
@@ -65,6 +69,8 @@ class FNN2d(nn.Module):
         '''
         length = len(self.ws)
         batchsize = x.shape[0]
+        nx, ny = x.shape[1], x.shape[2] # original shape
+        x = F.pad(x, self.padding, "constant", 0)
         size_x, size_y = x.shape[1], x.shape[2]
 
         x = self.fc0(x)
@@ -80,6 +86,8 @@ class FNN2d(nn.Module):
         x = self.fc1(x)
         x = self.activation(x)
         x = self.fc2(x)
+        x = x.reshape(batchsize, size_x, size_y, self.out_dim)
+        x = x[..., :nx, :ny, :]
         return x
 
 
@@ -147,7 +155,7 @@ class FNN2d_AD(nn.Module):
                  layers=None,
                  in_dim=3, out_dim=1,
                  activation='tanh'):
-        super(FNN2d, self).__init__()
+        super(FNN2d_AD, self).__init__()
 
         """
         The overall network. It contains 4 layers of the Fourier layer.

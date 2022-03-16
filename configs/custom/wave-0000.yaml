@@ -26,9 +26,9 @@ train:
   milestones: [150, 300, 450]
   base_lr: 0.001
   scheduler_gamma: 0.5
-  ic_loss: 10.0
+  ic_loss: 5.0
   f_loss: 1.0
-  xy_loss: 1.0
+  xy_loss: 10.0
   save_dir: 'Wave'
   save_name: 'Wave-eqn.pt'
   ckpt: 'checkpoints/Wave/Wave-eqn.pt'

@@ -19,19 +19,20 @@ model:
   modes3: [8, 8, 8, 8]
   fc_dim: 128
   activation: 'gelu'
+  padding: 5
 
 train:
   batchsize: 1
   # epochs: 500
   # milestones: [150, 250, 350, 450, 550, 650, 750, 850, 950]
   # milestones: [150, 300, 450]
-  epochs: 150
+  epochs: 100
   milestones: [25, 50, 75, 100]
   base_lr: 0.001
   scheduler_gamma: 0.5
-  ic_loss: 10.0
+  ic_loss: 5.0
   f_loss: 1.0
-  xy_loss: 1.0
+  xy_loss: 5.0
   save_dir: 'Wave2D'
   save_name: 'Wave2D-0000.pt'
   ckpt: 'checkpoints/Wave2D/Wave2D-0000.pt'

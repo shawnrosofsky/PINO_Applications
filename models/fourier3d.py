@@ -6,7 +6,7 @@ from .basics import SpectralConv3d
 
 
 class FNN3d(nn.Module):
-    def __init__(self, modes1, modes2, modes3, width=16, fc_dim=128, layers=None, in_dim=4, out_dim=1, activation='tanh'):
+    def __init__(self, modes1, modes2, modes3, width=16, fc_dim=128, layers=None, in_dim=4, out_dim=1, activation='tanh', pad_x=0, pad_y=0, pad_z=0):
         '''
         Args:
             modes1: list of int, first dimension maximal modes for each layer
@@ -20,12 +20,15 @@ class FNN3d(nn.Module):
         self.modes1 = modes1
         self.modes2 = modes2
         self.modes3 = modes3
+        self.in_dim = in_dim
+        self.out_dim = out_dim
+        self.padding = (0, 0, 0, pad_z, 0, pad_y, 0, pad_x)
 
         if layers is None:
             self.layers = [width] * 4
         else:
             self.layers = layers
-        self.fc0 = nn.Linear(in_dim, layers[0])
+        self.fc0 = nn.Linear(self.in_dim, layers[0])
 
         self.sp_convs = nn.ModuleList([SpectralConv3d(
             in_size, out_size, mode1_num, mode2_num, mode3_num)
@@ -36,7 +39,7 @@ class FNN3d(nn.Module):
                                  for in_size, out_size in zip(self.layers, self.layers[1:])])
 
         self.fc1 = nn.Linear(layers[-1], fc_dim)
-        self.fc2 = nn.Linear(fc_dim, out_dim)
+        self.fc2 = nn.Linear(fc_dim, self.out_dim)
         
         if activation =='tanh':
             self.activation = F.tanh
@@ -56,6 +59,8 @@ class FNN3d(nn.Module):
         '''
         length = len(self.ws)
         batchsize = x.shape[0]
+        nx, ny, nz = x.shape[1], x.shape[2], x.shape[3]
+        x = F.pad(x, self.padding, "constant", 0)
         size_x, size_y, size_z = x.shape[1], x.shape[2], x.shape[3]
 
         x = self.fc0(x)
@@ -73,4 +78,6 @@ class FNN3d(nn.Module):
         # x = torch.tanh(x)
         x = self.activation(x)
         x = self.fc2(x)
+        x = x.reshape(batchsize, size_x, size_y, size_z, self.out_dim) # make sure dimensions are what we expect before getting rid of padding
+        x = x[..., :nx, :ny, :nz, :]
         return x

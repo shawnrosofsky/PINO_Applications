@@ -20,6 +20,7 @@ model:
   modes3: [8, 8, 8, 8]
   fc_dim: 128
   activation: 'gelu'
+  padding: 5
 
 train:
   batchsize: 1
@@ -27,7 +28,7 @@ train:
   # milestones: [150, 250, 350, 450, 550, 650, 750, 850, 950]
   # milestones: [150, 300, 450]
   epochs: 150
-  milestones: [25, 50, 75, 100]
+  milestones: [25, 50, 75, 100, 125, 150]
   base_lr: 0.001
   scheduler_gamma: 0.5
   ic_loss: 10.0

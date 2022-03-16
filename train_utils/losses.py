@@ -65,7 +65,7 @@ def darcy_loss(u, a):
     return loss_f
 
 
-def FDM_NS_vorticity(w, v=1/40, t_interval=1.0):
+def FDM_NS_vorticity(w, nu=1/40, t_interval=1.0):
     batchsize = w.size(0)
     nx = w.size(1)
     ny = w.size(2)
@@ -101,26 +101,26 @@ def FDM_NS_vorticity(w, v=1/40, t_interval=1.0):
     dt = t_interval / (nt-1)
     wt = (w[:, :, :, 2:] - w[:, :, :, :-2]) / (2 * dt)
 
-    Du1 = wt + (ux*wx + uy*wy - v*wlap)[...,1:-1] #- forcing
+    Du1 = wt + (ux*wx + uy*wy - nu*wlap)[...,1:-1] #- forcing
     return Du1
 
 
-def Autograd_Burgers(u, grid, v=1/100):
+def Autograd_Burgers(u, grid, nu=1/100):
     from torch.autograd import grad
     gridt, gridx = grid
 
     ut = grad(u.sum(), gridt, create_graph=True)[0]
     ux = grad(u.sum(), gridx, create_graph=True)[0]
     uxx = grad(ux.sum(), gridx, create_graph=True)[0]
-    Du = ut + ux*u - v*uxx
+    Du = ut + ux*u - nu*uxx
     return Du, ux, uxx, ut
 
 
-def AD_loss(u, u0, grid, index_ic=None, p=None, q=None):
+def AD_loss(u, u0, grid, index_ic=None, p=None, q=None, nu=0.01):
     batchsize = u.size(0)
     # lploss = LpLoss(size_average=True)
 
-    Du, ux, uxx, ut = Autograd_Burgers(u, grid)
+    Du, ux, uxx, ut = Autograd_Burgers(u, grid, nu=nu)
 
     if index_ic is None:
         # u in on a uniform grid
@@ -147,6 +147,52 @@ def AD_loss(u, u0, grid, index_ic=None, p=None, q=None):
     f = torch.zeros(Du.shape, device=u.device)
     loss_f = F.mse_loss(Du, f)
     return loss_ic, loss_f
+
+
+def Autograd_Wave(u, grid, c=1.0):
+    from torch.autograd import grad
+    gridt, gridx = grid
+
+    ut = grad(u.sum(), gridt, create_graph=True)[0]
+    utt = grad(ut.sum(), gridt, create_graph=True)[0]
+    ux = grad(u.sum(), gridx, create_graph=True)[0]
+    uxx = grad(ux.sum(), gridx, create_graph=True)[0]
+    Du = utt - c**2*uxx
+    return Du, uxx, utt
+
+
+def AD_loss_Wave(u, u0, grid, index_ic=None, p=None, q=None, c=1.0):
+    batchsize = u.size(0)
+    # lploss = LpLoss(size_average=True)
+
+    Du, uxx, utt = Autograd_Wave(u, grid, c=c)
+
+    if index_ic is None:
+        # u in on a uniform grid
+        nt = u.size(1)
+        nx = u.size(2)
+        u = u.reshape(batchsize, nt, nx)
+
+        index_t = torch.zeros(nx,).long()
+        index_x = torch.tensor(range(nx)).long()
+        boundary_u = u[:, index_t, index_x]
+
+        # loss_bc0 = F.mse_loss(u[:, :, 0], u[:, :, -1])
+        # loss_bc1 = F.mse_loss(ux[:, :, 0], ux[:, :, -1])
+    else:
+        # u is randomly sampled, 0:p are BC, p:2p are ic, 2p:2p+q are interior
+        boundary_u = u[:, :p]
+        batch_index = torch.tensor(range(batchsize)).reshape(batchsize, 1).repeat(1, p)
+        u0 = u0[batch_index, index_ic]
+
+        # loss_bc0 = F.mse_loss(u[:, p:p+p//2], u[:, p+p//2:2*p])
+        # loss_bc1 = F.mse_loss(ux[:, p:p+p//2], ux[:, p+p//2:2*p])
+
+    loss_ic = F.mse_loss(boundary_u, u0)
+    f = torch.zeros(Du.shape, device=u.device)
+    loss_f = F.mse_loss(Du, f)
+    return loss_ic, loss_f
+
 
 
 class LpLoss(object):
@@ -198,7 +244,7 @@ class LpLoss(object):
         return self.rel(x, y)
 
 
-def FDM_Burgers(u, D=1, v=1/100):
+def FDM_Burgers(u, D=1, nu=1/100):
     batchsize = u.size(0)
     nt = u.size(1)
     nx = u.size(2)
@@ -217,11 +263,34 @@ def FDM_Burgers(u, D=1, v=1/100):
     ux = torch.fft.irfft(ux_h[:, :, :k_max+1], dim=2, n=nx)
     uxx = torch.fft.irfft(uxx_h[:, :, :k_max+1], dim=2, n=nx)
     ut = (u[:, 2:, :] - u[:, :-2, :]) / (2 * dt)
-    Du = ut + (ux*u - v*uxx)[:,1:-1,:]
+    Du = ut + (ux*u - nu*uxx)[:,1:-1,:]
+    return Du
+
+def FDM_Wave(u, D=1, c=1.0):
+    batchsize = u.size(0)
+    nt = u.size(1)
+    nx = u.size(2)
+
+    u = u.reshape(batchsize, nt, nx)
+    dt = D / (nt-1)
+    dx = D / (nx)
+
+    u_h = torch.fft.fft(u, dim=2)
+    # Wavenumbers in y-direction
+    k_max = nx//2
+    k_x = torch.cat((torch.arange(start=0, end=k_max, step=1, device=u.device),
+                     torch.arange(start=-k_max, end=0, step=1, device=u.device)), 0).reshape(1,1,nx)
+    ux_h = 2j *np.pi*k_x*u_h
+    uxx_h = 2j *np.pi*k_x*ux_h
+    ux = torch.fft.irfft(ux_h[:, :, :k_max+1], dim=2, n=nx)
+    uxx = torch.fft.irfft(uxx_h[:, :, :k_max+1], dim=2, n=nx)
+    ut = (u[:, 2:, :] - u[:, :-2, :]) / (2 * dt)
+    utt = (u[:, 2:, :] - 2.0*u[:, 1:-1, :] + u[:, :-2, :]) / (dt**2)
+    Du = utt - c**2 * uxx[:,1:-1,:]
     return Du
 
 
-def PINO_loss(u, u0):
+def PINO_loss(u, u0, nu=0.01):
     batchsize = u.size(0)
     nt = u.size(1)
     nx = u.size(2)
@@ -234,7 +303,7 @@ def PINO_loss(u, u0):
     boundary_u = u[:, index_t, index_x]
     loss_u = F.mse_loss(boundary_u, u0)
 
-    Du = FDM_Burgers(u)[:, :, :]
+    Du = FDM_Burgers(u, nu=nu)[:, :, :]
     f = torch.zeros(Du.shape, device=u.device)
     loss_f = F.mse_loss(Du, f)
 
@@ -243,8 +312,29 @@ def PINO_loss(u, u0):
     #                       (2/(nx)), (u[:, :, 0] - u[:, :, -2])/(2/(nx)))
     return loss_u, loss_f
 
+def PINO_loss_wave(u, u0):
+    batchsize = u.size(0)
+    nt = u.size(1)
+    nx = u.size(2)
 
-def PINO_loss3d(u, u0, forcing, v=1/40, t_interval=1.0):
+    u = u.reshape(batchsize, nt, nx)
+    # lploss = LpLoss(size_average=True)
+
+    index_t = torch.zeros(nx,).long()
+    index_x = torch.tensor(range(nx)).long()
+    boundary_u = u[:, index_t, index_x]
+    loss_u = F.mse_loss(boundary_u, u0)
+
+    Du = FDM_Wave(u)[:, :, :]
+    f = torch.zeros(Du.shape, device=u.device)
+    loss_f = F.mse_loss(Du, f)
+
+    # loss_bc0 = F.mse_loss(u[:, :, 0], u[:, :, -1])
+    # loss_bc1 = F.mse_loss((u[:, :, 1] - u[:, :, -1]) /
+    #                       (2/(nx)), (u[:, :, 0] - u[:, :, -2])/(2/(nx)))
+    return loss_u, loss_f
+
+def PINO_loss3d(u, u0, forcing, nu=1/40, t_interval=1.0):
     batchsize = u.size(0)
     nx = u.size(1)
     ny = u.size(2)
@@ -256,7 +346,7 @@ def PINO_loss3d(u, u0, forcing, v=1/40, t_interval=1.0):
     u_in = u[:, :, :, 0]
     loss_ic = lploss(u_in, u0)
 
-    Du = FDM_NS_vorticity(u, v, t_interval)
+    Du = FDM_NS_vorticity(u, nu, t_interval)
     f = forcing.repeat(batchsize, 1, 1, nt-2)
     loss_f = lploss(Du, f)
 
