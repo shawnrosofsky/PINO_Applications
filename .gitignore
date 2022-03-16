@@ -1,4 +1,4 @@
-data
+# data
 log
 .vscode
 __pycache__
@@ -6,6 +6,7 @@ __pycache__
 figs
 checkpoints
 .ipynb_checkpoints
-*.ipynb
+legacy
+# *.ipynb
 *.pt
 *.pth
