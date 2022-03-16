@@ -1,0 +1,46 @@
+data:
+  name: 'Burgers2D_coupled-0002'
+  total_num: 500
+  n_train: 475
+  n_test: 25
+  nx: 128
+  nt: 100
+  sub: 1
+  sub_t: 1
+  # c: 1.0
+  nu: 0.01
+
+model:
+  layers: [64, 64, 64, 64, 64]
+  modes1: [8, 8, 8, 8]
+  modes2: [8, 8, 8, 8]
+  modes3: [8, 8, 8, 8]
+  fc_dim: 128
+  in_dim: 5
+  out_dim: 2
+  activation: 'gelu'
+
+train:
+  batchsize: 1
+  # epochs: 500
+  # milestones: [150, 250, 350, 450, 550, 650, 750, 850, 950]
+  # milestones: [150, 300, 450]
+  epochs: 150
+  milestones: [25, 50, 75, 100, 125, 150]
+  base_lr: 0.001
+  scheduler_gamma: 0.5
+  ic_loss: 5.0
+  f_loss: 2.0
+  xy_loss: 5.0
+  save_dir: 'Burgers2D_coupled'
+  save_name: 'Burgers2D_coupled-0002.pt'
+  ckpt: 'checkpoints/Burgers2D_coupled/Burgers2D_coupled-0002.pt'
+  ckpt_freq: 25
+
+log:
+  project: 'PINO-Burgers'
+  group: 'Burgers2D_coupled-0002'
+
+test:
+  batchsize: 1
+  ckpt: 'checkpoints/Burgers2D_coupled/Burgers2D_coupled-0002.pt'

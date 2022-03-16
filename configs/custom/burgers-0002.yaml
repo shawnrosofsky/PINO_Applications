@@ -1,0 +1,41 @@
+data:
+  name: 'Burgers-0002'
+  total_num: 10
+  n_train: 9
+  n_test: 1
+  # nx: 1024
+  nx: 128
+  nt: 100
+  # sub: 8
+  sub: 1
+  sub_t: 1
+  nu: 0.01
+
+model:
+  layers: [16, 24, 24, 32, 32]
+  modes1: [15, 12, 9, 9]
+  modes2: [15, 12, 9, 9]
+  fc_dim: 128
+  activation: gelu
+
+train:
+  batchsize: 20
+  epochs: 500
+  milestones: [150, 300, 450, 600, 750, 900]
+  base_lr: 0.001
+  scheduler_gamma: 0.5
+  ic_loss: 10.0
+  f_loss: 1.0
+  xy_loss: 1.0
+  save_dir: 'Burgers'
+  save_name: 'Burgers-0002.pt'
+  ckpt: 'checkpoints/Burgers/Burgers-0002.pt'
+  ckpt_freq: 100
+
+log:
+  project: 'PINO-Burgers'
+  group: 'Burgers-0002'
+
+test:
+  batchsize: 1
+  ckpt: 'checkpoints/Burgers/Burgers-0002.pt'
