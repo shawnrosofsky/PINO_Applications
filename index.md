@@ -10,8 +10,7 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ## Results
 
 ### Burgers 1D
-![assets/movies/Burgers1D.gif]
-
+![Burgers Equation 1D](assets/movies/Burgers1D.gif)
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
