@@ -9,6 +9,9 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 
 ## Results
 
+### Wave 1D
+![Wave Equation 1D](assets/movies/Wave1D.gif)
+
 ### Burgers 1D
 ![Burgers Equation 1D](assets/movies/Burgers1D.gif)
 
