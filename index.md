@@ -12,8 +12,20 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ### Wave Equation 1D
 ![Wave Equation 1D](assets/movies/Wave1D.gif)
 
+### Wave Equation 2D
+![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
+![Wave Equation 2D 1](assets/movies/Wave2D_1.gif)
+
 ### Burgers Equation 1D
 ![Burgers Equation 1D](assets/movies/Burgers1D.gif)
+
+### Burgers Equation 2D Scalar
+![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
+![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif)
+
+### Burgers Equation 2D Inviscid
+![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_2.gif)
+![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_3.gif)
 
 ### Burgers Equation 2D Vector
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
