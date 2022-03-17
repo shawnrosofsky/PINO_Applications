@@ -9,13 +9,16 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 
 ## Results
 
-### Wave 1D
+### Wave Equation 1D
 ![Wave Equation 1D](assets/movies/Wave1D.gif)
 
-### Burgers 1D
+### Burgers Equation 1D
 ![Burgers Equation 1D](assets/movies/Burgers1D.gif)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Nonlinear Shallow Water Equations 2D
+![Nonlinear Shallow Water Equations 2D](assets/movies/SWE_Nonlinear_eta.gif)
+
+<!-- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
 Syntax highlighted code block
@@ -34,3 +37,4 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
+ -->
