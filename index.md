@@ -24,8 +24,8 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif)
 
 ### Burgers Equation 2D Inviscid
-![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_2.gif)
-![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_3.gif)
+![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_novisc_2.gif)
+![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif)
 
 ### Burgers Equation 2D Vector
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
