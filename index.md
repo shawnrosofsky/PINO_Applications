@@ -16,7 +16,9 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ![Burgers Equation 1D](assets/movies/Burgers1D.gif)
 
 ### Nonlinear Shallow Water Equations 2D
-![Nonlinear Shallow Water Equations 2D](assets/movies/SWE_Nonlinear_eta.gif)
+![Nonlinear Shallow Water Equations eta 2D](assets/movies/SWE_Nonlinear_eta.gif)
+![Nonlinear Shallow Water Equations u 2D](assets/movies/SWE_Nonlinear_u.gif)
+![Nonlinear Shallow Water Equations v 2D](assets/movies/SWE_Nonlinear_v.gif)
 
 <!-- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
