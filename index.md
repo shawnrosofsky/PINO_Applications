@@ -31,6 +31,11 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
 ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
 
+### Linear Shallow Water Equations 2D
+![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_h.gif)
+![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_u.gif)
+![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_v.gif)
+
 ### Nonlinear Shallow Water Equations 2D
 ![Nonlinear Shallow Water Equations 2D eta](assets/movies/SWE_Nonlinear_eta.gif)
 ![Nonlinear Shallow Water Equations 2D u](assets/movies/SWE_Nonlinear_u.gif)
