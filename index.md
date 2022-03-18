@@ -11,7 +11,7 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 
 ### Wave Equation 1D
 
-<img src="http://www.sciweavers.org/tex2img.php?eq=u_%7Btt%7D%20%5Cleft%28%20x%2Ct%20%5Cright%29%20%2B%20c%5E2%20u_%7Bxx%7D%5Cleft%28%20x%2Ct%20%5Cright%29%20%26%3D%26%200%2C%20%5C%5C%0Au%5Cleft%28%20x%2C%200%20%5Cright%29%20%26%3D%26%20u_0%5Cleft%28x%5Cright%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right) &=& 0, \\u\left( x, 0 \right) &=& u_0\left(x\right)" width="267" height="46" />
+![Equation: Wave Equation 1D](https://bit.ly/3IqwoVE)
 
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
