@@ -10,8 +10,13 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ## Results
 
 ### Wave Equation 1D
+The 1D wave equation was the first test for our PINOs.  This equation computationally simple PDE that is second order in time and models a variety of different physics phenomena.  This equation is given by
 
 ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg)
+
+where c=1 is our wave speed and with periodic boundary conditions.  
+
+We present results bellow illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
 
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
