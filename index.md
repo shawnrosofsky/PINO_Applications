@@ -11,7 +11,7 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 
 ### Wave Equation 1D
 
-![Equation: Wave Equation 1D](https://bit.ly/3IqwoVE)
+![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg)
 
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
