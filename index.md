@@ -10,6 +10,8 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 ## Results
 
 ### Wave Equation 1D
+
+<img src="https://bit.ly/3IqwoVE" align="center" border="0" alt="u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right) &=& 0, \\u\left( x, 0 \right) &=& u_0\left(x\right)," width="275" height="46" />
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
 
