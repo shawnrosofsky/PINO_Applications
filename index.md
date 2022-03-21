@@ -24,27 +24,27 @@ We present results bellow illustrating the ability of the PINO to reconstruct th
 
 ### Wave Equation 2D
 ![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
-![Wave Equation 2D 1](assets/movies/Wave2D_1.gif)
+<!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
 
 ### Burgers Equation 1D
 ![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
 
 ### Burgers Equation 2D Scalar
 ![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
-![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif)
+<!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
 
 ### Burgers Equation 2D Inviscid
 ![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_novisc_2.gif)
-![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif)
+<!-- ![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif) -->
 
 ### Burgers Equation 2D Vector
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
-![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
+<!-- ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif) -->
 
-### Linear Shallow Water Equations 2D
+<!-- ### Linear Shallow Water Equations 2D
 ![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_f1_h.gif)
 ![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_f1_u.gif)
-![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif)
+![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif) -->
 
 ### Nonlinear Shallow Water Equations 2D
 ![Nonlinear Shallow Water Equations 2D eta](assets/movies/SWE_Nonlinear_eta.gif)
