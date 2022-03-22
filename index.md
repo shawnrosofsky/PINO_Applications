@@ -129,6 +129,7 @@ begin{align}
 \label{eq:swe_nonlin_III}
 \frac{\partial(\eta v)}{\partial t}+\frac{\partial(\eta u v)}{\partial x}+\frac{\partial}{\partial y}\left(\eta v^{2}+\frac{1}{2} g \eta^{2}\right)&=\nu\left(v_{xx} + v_{yy}\right), \\\\ \nonumber \\\\
 \end{align}
+
 \begin{align}
 \textrm{with} \quad \eta(x,y,0) = \eta_{0}(x,y),\ u(x,y,0)=0,\ v(x,y,0)=0,\ \quad 
 x,y \in[0,1), \ t \in[0,1], \nonumber
