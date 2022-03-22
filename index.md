@@ -28,7 +28,7 @@ We then extended the wave equation into 2D to assess the performance into 2D.  T
 $$
 \begin{align}
     u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \quad x\in \left[ 0,1 \right),\ t\in \left[0, 1 \right] \label{eq:wave1d}\\
-    u\left( x, 0 \right) &= u_0\left(x\right)\,, \nonumber
+    u\left( x, 0 \right) &= u_0\left(x\right)\,,
 \end{align}
 $$
 
