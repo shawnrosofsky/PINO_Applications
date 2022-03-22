@@ -26,12 +26,12 @@ We present results bellow illustrating the ability of the PINO to reconstruct th
 We then extended the wave equation into 2D to assess the performance into 2D.  This allow us to explore the requirements for adding the additional spatial dimension.  In 2D, the wave equation becomes
 
 $$
-    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0\, \\
-    
-    u\left( x, 0 \right) &= u_0\left(x\right)\,,
-    
-    x\in \left[ 0,1 \right), & t\in \left[0, 1 \right] \\
-
+\begin{align}
+ \label{eq:wave2d}
+    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right]&=0, \quad
+    x,y\in \left[ 0,1 \right),\ t\in \left[0, 1 \right]\\
+    u\left( x,y, 0 \right) = u_0\left(x,y\right)\,, \nonumber
+\end{align}
 $$
 
 where $c=1$ is the speed of the wave.
