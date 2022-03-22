@@ -13,8 +13,8 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 The 1D wave equation was the first test for our PINOs.  This equation computationally simple PDE that is second order in time and models a variety of different physics phenomena.  This equation is given by
 
 \begin{align}
-    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \\\\\\\\
-    u\left( x, 0 \right) &= u_0\left(x\right), \nonumber \\\\\\\\
+    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \\\\ \nonumber \\\\
+    u\left( x, 0 \right) &= u_0\left(x\right), \nonumber \\\\ \nonumber \\\\
     x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right] \nonumber 
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
