@@ -23,6 +23,19 @@ We present results bellow illustrating the ability of the PINO to reconstruct th
 
 
 ### Wave Equation 2D
+We then extended the wave equation into 2D to assess the performance into 2D.  This allow us to explore the requirements for adding the additional spatial dimension.  In 2D, the wave equation becomes
+
+$$
+\begin{align}
+    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \quad x\in \left[ 0,1 \right),\ t\in \left[0, 1 \right] \label{eq:wave1d}\\
+    u\left( x, 0 \right) &= u_0\left(x\right)\,, \nonumber
+\end{align}
+$$
+
+where $c=1$ is the speed of the wave.
+
+We present result bellow demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
+
 ![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
 <!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
 
