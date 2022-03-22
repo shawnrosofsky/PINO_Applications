@@ -13,9 +13,9 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 The 1D wave equation was the first test for our PINOs.  This equation computationally simple PDE that is second order in time and models a variety of different physics phenomena.  This equation is given by
 
 \begin{align}
-    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0\,, \\
-    u\left( x, 0 \right) &= u_0\left(x\right)\,,
-    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right] \\
+    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0\,, \\\\\\\\
+    u\left( x, 0 \right) &= u_0\left(x\right)\,, \\\\\\\\
+    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right] 
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
@@ -32,8 +32,8 @@ We then extended the wave equation into 2D to assess the performance into 2D.  T
 
 \begin{align}
  \label{eq:wave2d}
-    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0 \,, \\
-    u\left( x,y, 0 \right) &= u_0\left(x,y\right)\,, \\
+    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0 \,, \\\\\\\\
+    u\left( x,y, 0 \right) &= u_0\left(x,y\right)\,, \\\\\\\\
     x,y\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right]\,,
 \end{align}
 
@@ -49,8 +49,8 @@ The 1D Burgers equation serves as a nonlinear test case with for a variety of nu
 
 \begin{align}
 \label{eq:burgers1d} 
-    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t)\,, \\
-    u(x, 0) &=u_{0}(x)\,, \\
+    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t)\,, \\\\\\\\
+    u(x, 0) &=u_{0}(x)\,, \\\\\\\\
     x \in[0,1), & \ t \in[0,1] 
 \end{align}
 
