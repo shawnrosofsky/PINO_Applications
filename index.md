@@ -19,7 +19,7 @@ The 1D wave equation was the first test for our PINOs.  This equation computatio
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
-where $$c=1$$ is our wave speed.  
+where \$c=1\$ is our wave speed.  
 
 We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
 
@@ -38,7 +38,7 @@ We then extended the wave equation into 2D to assess the performance into 2D.  T
     x,y\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right], \nonumber
 \end{align}
 
-where $$c=1$$ is the speed of the wave.
+where \$c=1\$ is the speed of the wave.
 
 We present result below demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
 
@@ -56,7 +56,7 @@ The 1D Burgers equation serves as a nonlinear test case with for a variety of nu
     x \in[0,1), & \ t \in[0,1], \nonumber
 \end{align}
 
-where the viscosity $$\nu=0.01$$.
+where the viscosity \$\nu=0.01\$.
 
 In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
 
@@ -73,7 +73,7 @@ u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
 x,y \in[0,1), & \ t \in[0,1], \nonumber
 \end{align}
 
-where the viscosity $$\nu=0.01$$.
+where the viscosity \$\nu=0.01\$.
 
 {: .center}
 ![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
