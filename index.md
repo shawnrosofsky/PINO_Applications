@@ -56,9 +56,7 @@ The 1D Burgers equation serves as a nonlinear test case with for a variety of nu
     x \in[0,1), & \ t \in[0,1], \nonumber
 \end{align}
 
-where the viscosity \$\nu=0.01\$.
-
-In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
+where the viscosity \$\nu=0.01\$.  In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
 
 {: .center}
 ![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
@@ -73,17 +71,54 @@ u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
 x,y \in[0,1), & \ t \in[0,1], \nonumber
 \end{align}
 
-where the viscosity \$\nu=0.01\$.
+where the viscosity \$\nu=0.01\$.  The plots below the compare the PINO's predictions to the simulation data with very little error.
 
 {: .center}
 ![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
 <!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
 
 ### Burgers Equation 2D Inviscid
+We also looked at cases involving the inviscid 
+Burgers equation in 2D in which we set the viscosity 
+\$\nu=0\$.  This setup is known to produce shocks 
+that can result in numerical instabilities if not 
+handled correctly.  We used a finite volume method (FVM) 
+to generate this data to ensure stability in the presence 
+of shocks.  In turn, this allowed us to investigate 
+the network's performance when processing shocks. 
+The equation is given by
+
+
+\begin{align}
+\label{eq:burgers2d_inviscid} 
+u_{t}(x, y, t)+\partial_{x}\left[u^{2}(x, y, t) / 2\right] + \partial_{y}\left[u^{2}(x, y, t) / 2\right] &=0, \\\\ \nonumber \\\\
+\quad
+u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), \ t \in[0,1]. \nonumber
+\end{align}
+
+<!-- Here we embed a conservation law into the network rather than the PDE itself as our physics term, due the poor handling of the shock term -->
+
+We observe in the plots below that the PINO as able to broadly reconstruct the data in the presence of the shock.  Admittedly, the network has dificulty determing the precise location of the shock.
+
+{: .center}
 ![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_novisc_2.gif)
 <!-- ![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif) -->
 
 ### Burgers Equation 2D Vector
+Exploring the vectorized form of the 2D Burgers equation allowed us to test how well the model handles coupled fields.  Here, we parametrize the system with the fields $u$ and $v$. The equations take the form
+
+\begin{align}
+\label{eq:burgers2d_vec_I} 
+u_{t}(x, y, t)+u(x, y ,t)u_{x}(x, y, t) + v(x, y, t)u_{y}(x, y, t) &=\nu \left[u_{xx}(x, y, t) +u_{yy}(x, y, t) \right], \\\\ \nonumber \\\\
+\label{eq:burgers2d_vec_II} 
+v_{t}(x, y, t)+u(x, y ,t)v_{x}(x, y, t) + v(x, y, t)v_{y}(x, y, t) &=\nu \left[v_{xx}(x, y, t) +v_{yy}(x, y, t) \right], \\\\ \nonumber \\\\
+u(x, y, 0) =u_{0}(x, y),\ v(x, y, 0) = v_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), & \ t \in[0,1] \nonumber
+\end{align}
+
+where the viscosity \$\nu=0.01\$.  We compare the PINO's results in the figures below to the simulated data and the error.  These plots depict the PINO's ability to accurately handle 2D nonlinear coupled fields.
+
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
 ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
 
