@@ -19,9 +19,7 @@ The 1D wave equation was the first test for our PINOs.  This equation computatio
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
-where $c=1$ is our wave speed.  
-
-We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
+where $c=1$ is our wave speed.  We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
 
 {: .center}
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
@@ -78,16 +76,7 @@ where the viscosity $\nu=0.01$.  The plots below the compare the PINO's predicti
 <!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
 
 ### Burgers Equation 2D Inviscid
-We also looked at cases involving the inviscid 
-Burgers equation in 2D in which we set the viscosity 
-$\nu=0$.  This setup is known to produce shocks 
-that can result in numerical instabilities if not 
-handled correctly.  We used a finite volume method (FVM) 
-to generate this data to ensure stability in the presence 
-of shocks.  In turn, this allowed us to investigate 
-the network's performance when processing shocks. 
-The equation is given by
-
+We also looked at cases involving the inviscid Burgers equation in 2D in which we set the viscosity $\nu=0$.  This setup is known to produce shocks that can result in numerical instabilities if not handled correctly.  We used a finite volume method (FVM) to generate this data to ensure stability in the presence of shocks.  In turn, this allowed us to investigate the network's performance when processing shocks. The equation is given by
 
 \begin{align}
 \label{eq:burgers2d_inviscid} 
@@ -124,11 +113,31 @@ where the viscosity $\nu=0.01$.  We compare the PINO's results in the figures be
 ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
 
 <!-- ### Linear Shallow Water Equations 2D
+{: .center}
 ![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_f1_h.gif)
 ![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_f1_u.gif)
 ![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif) -->
 
 ### Nonlinear Shallow Water Equations 2D
+To examine the properties of PINOs with 3 coupled nonlinear equations, we examined the ability of the networks to reproduce the nonlinear shallow water equations.  These equations are applicable in a number of physical scenerios including tsunami modeling.  We assumed that the total fluid column height $\eta(x,y,t)$ was composed of a mean height plus some perturbation, but the initial velicity fields $u(x,y,t)$ and $v(x,y,t)$ were initially zero.  These equations are given by
+
+begin{align}
+\label{eq:swe_nonlin_I}
+\frac{\partial(\eta)}{\partial t}+\frac{\partial(\eta u)}{\partial x}+\frac{\partial(\eta v)}{\partial y}&=0,  \\\\ \nonumber \\\\
+\label{eq:swe_nonlin_II}
+\frac{\partial(\eta u)}{\partial t}+\frac{\partial}{\partial x}\left(\eta u^{2}+\frac{1}{2} g \eta^{2}\right)+\frac{\partial(\eta u v)}{\partial y}&=\nu\left(u_{xx} + u_{yy}\right), \\\\ \nonumber \\\\
+\label{eq:swe_nonlin_III}
+\frac{\partial(\eta v)}{\partial t}+\frac{\partial(\eta u v)}{\partial x}+\frac{\partial}{\partial y}\left(\eta v^{2}+\frac{1}{2} g \eta^{2}\right)&=\nu\left(v_{xx} + v_{yy}\right), \\\\ \nonumber \\\\
+\end{align}
+\begin{align}
+\textrm{with} \quad \eta(x,y,0) = \eta_{0}(x,y),\ u(x,y,0)=0,\ v(x,y,0)=0,\ \quad 
+x,y \in[0,1), \ t \in[0,1], \nonumber
+\end{align}
+
+where the gravitational coefficient $g=1$ and the viscosity coefficient $\nu=0.002$ to prevent the formation of shocks.  Below we plot how each of these fields evolves in space and time according to the PINO predictions and to the simulated data.  We observe that the error in each of these cases is relatively small.
+
+
+{: .center}
 ![Nonlinear Shallow Water Equations 2D eta](assets/movies/SWE_Nonlinear_eta.gif)
 ![Nonlinear Shallow Water Equations 2D u](assets/movies/SWE_Nonlinear_u.gif)
 ![Nonlinear Shallow Water Equations 2D v](assets/movies/SWE_Nonlinear_v.gif)
