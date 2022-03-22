@@ -45,6 +45,17 @@ We present result bellow demonstrating the PINO reconstructing results for the w
 <!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
 
 ### Burgers Equation 1D
+The 1D Burgers equation serves as a nonlinear test case with for a variety of numerical methods.  This allowed us to verify that our PINOs can learn and reconstruct nonlinear phenomena.  The equation is given in conservative form by
+
+\begin{align}
+\label{eq:burgers1d} 
+    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t)\,, \\
+    u(x, 0) &=u_{0}(x)\,, \\
+    x \in[0,1), & \ t \in[0,1] 
+\end{align}
+
+where the viscosity $\nu=0.01$.
+
 ![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
 
 ### Burgers Equation 2D Scalar
