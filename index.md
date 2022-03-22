@@ -30,6 +30,7 @@ $$
  \label{eq:wave2d}
     u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right]&=0, \quad
     x,y\in \left[ 0,1 \right),\ t\in \left[0, 1 \right]\\
+    
     u\left( x,y, 0 \right) = u_0\left(x,y\right)\,, \nonumber
 \end{align}
 $$
