@@ -121,7 +121,7 @@ where the viscosity $\nu=0.01$.  We compare the PINO's results in the figures be
 ### Nonlinear Shallow Water Equations 2D
 To examine the properties of PINOs with 3 coupled nonlinear equations, we examined the ability of the networks to reproduce the nonlinear shallow water equations.  These equations are applicable in a number of physical scenerios including tsunami modeling.  We assumed that the total fluid column height $\eta(x,y,t)$ was composed of a mean height plus some perturbation, but the initial velicity fields $u(x,y,t)$ and $v(x,y,t)$ were initially zero.  These equations are given by
 
-begin{align}
+\begin{align}
 \label{eq:swe_nonlin_I}
 \frac{\partial(\eta)}{\partial t}+\frac{\partial(\eta u)}{\partial x}+\frac{\partial(\eta v)}{\partial y}&=0,  \\\\ \nonumber \\\\
 \label{eq:swe_nonlin_II}
@@ -129,7 +129,6 @@ begin{align}
 \label{eq:swe_nonlin_III}
 \frac{\partial(\eta v)}{\partial t}+\frac{\partial(\eta u v)}{\partial x}+\frac{\partial}{\partial y}\left(\eta v^{2}+\frac{1}{2} g \eta^{2}\right)&=\nu\left(v_{xx} + v_{yy}\right), \\\\ \nonumber \\\\
 \end{align}
-
 \begin{align}
 \textrm{with} \quad \eta(x,y,0) = \eta_{0}(x,y),\ u(x,y,0)=0,\ v(x,y,0)=0,\ \quad 
 x,y \in[0,1), \ t \in[0,1], \nonumber
