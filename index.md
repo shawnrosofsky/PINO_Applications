@@ -15,14 +15,15 @@ The 1D wave equation was the first test for our PINOs.  This equation computatio
 \begin{align}
     u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \\\\ \nonumber \\\\
     u\left( x, 0 \right) &= u_0\left(x\right), \nonumber \\\\ \nonumber \\\\
-    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right] \nonumber 
+    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right], \nonumber 
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
 where c=1 is our wave speed and with periodic boundary conditions.  
 
-We present results bellow illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
+We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
 
+{: .center}
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
 
@@ -32,15 +33,16 @@ We then extended the wave equation into 2D to assess the performance into 2D.  T
 
 \begin{align}
  \label{eq:wave2d}
-    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0, \\\\\\\\
-    u\left( x,y, 0 \right) &= u_0\left(x,y\right), \nonumber \\\\\\\\
+    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0, \\\\ \nonumber \\\\
+    u\left( x,y, 0 \right) &= u_0\left(x,y\right), \nonumber \\\\ \nonumber \\\\
     x,y\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right], \nonumber
 \end{align}
 
 where $c=1$ is the speed of the wave.
 
-We present result bellow demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
+We present result below demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
 
+{: .center}
 ![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
 <!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
 
@@ -49,16 +51,29 @@ The 1D Burgers equation serves as a nonlinear test case with for a variety of nu
 
 \begin{align}
 \label{eq:burgers1d} 
-    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t), \\\\\\\\
-    u(x, 0) &=u_{0}(x), \nonumber \\\\\\\\
+    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t), \\\\ \nonumber \\\\
+    u(x, 0) &=u_{0}(x), \nonumber \\\\ \nonumber \\\\
     x \in[0,1), & \ t \in[0,1], \nonumber
 \end{align}
 
 where the viscosity $\nu=0.01$.
 
+In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
+
 ![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
 
 ### Burgers Equation 2D Scalar
+To verify our model can handle nonlinear phenomena in 2D, we extend the Burgers equation into 2D by assuming the field $u$ is a scalar.  The equations take the form
+
+\begin{align}
+\label{eq:burgers2d} 
+u_{t}(x, y, t)+\partial_{x}\left[u^{2}(x, y, t) / 2\right] + \partial_{y}\left[u^{2}(x, y, t) / 2\right] &=\nu \left[u_{xx}(x, y, t) +u_{yy}(x, y, t)\right], \\\\ \nonumber \\\\
+u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), & \ t \in[0,1], \nonumber
+\end{align}
+
+where the viscosity $\nu=0.01$.
+
 ![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
 <!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
 
