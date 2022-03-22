@@ -13,8 +13,9 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 The 1D wave equation was the first test for our PINOs.  This equation computationally simple PDE that is second order in time and models a variety of different physics phenomena.  This equation is given by
 
 \begin{align}
-    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \quad x\in \left[ 0,1 \right),\ t\in \left[0, 1 \right] \label{eq:wave1d}\\
-    u\left( x, 0 \right) &= u_0\left(x\right)\,, \nonumber
+    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0\,, \\
+    u\left( x, 0 \right) &= u_0\left(x\right)\,,
+    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right] \\
 \end{align}
 <!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
@@ -29,14 +30,12 @@ We present results bellow illustrating the ability of the PINO to reconstruct th
 ### Wave Equation 2D
 We then extended the wave equation into 2D to assess the performance into 2D.  This allow us to explore the requirements for adding the additional spatial dimension.  In 2D, the wave equation becomes
 
-$$
 \begin{align}
  \label{eq:wave2d}
-    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right]&=0, \quad
-    x,y\in \left[ 0,1 \right),\ t\in \left[0, 1 \right]\\
-    u\left( x,y, 0 \right) = u_0\left(x,y\right)\,, \nonumber
+    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0 \,, \\
+    u\left( x,y, 0 \right) &= u_0\left(x,y\right)\,, \\
+    x,y\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right]\,,
 \end{align}
-$$
 
 where $c=1$ is the speed of the wave.
 
