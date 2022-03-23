@@ -113,7 +113,7 @@ where the viscosity $\nu=0.01$.  We compare the PINO's results in the figures be
 ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
 
 <!-- ### Linear Shallow Water Equations 2D
-<!-- {: .center} -->
+{: .center}
 ![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_f1_h.gif)
 ![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_f1_u.gif)
 ![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif) -->
