@@ -21,7 +21,7 @@ The 1D wave equation was the first test for our PINOs.  This equation computatio
 
 where $c=1$ is our wave speed.  We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
 
-{: .center}
+<!-- {: .center} -->
 ![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
 
 
@@ -40,7 +40,7 @@ where $c=1$ is the speed of the wave.
 
 We present result below demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
 
-{: .center}
+<!-- {: .center} -->
 ![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
 <!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
 
@@ -56,7 +56,7 @@ The 1D Burgers equation serves as a nonlinear test case with for a variety of nu
 
 where the viscosity $\nu=0.01$.  In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
 
-{: .center}
+<!-- {: .center} -->
 ![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
 
 ### Burgers Equation 2D Scalar
@@ -71,7 +71,7 @@ x,y \in[0,1), & \ t \in[0,1], \nonumber
 
 where the viscosity $\nu=0.01$.  The plots below the compare the PINO's predictions to the simulation data with very little error.
 
-{: .center}
+<!-- {: .center} -->
 ![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
 <!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
 
@@ -90,7 +90,7 @@ x,y \in[0,1), \ t \in[0,1]. \nonumber
 
 We observe in the plots below that the PINO as able to broadly reconstruct the data in the presence of the shock.  Admittedly, the network has dificulty determing the precise location of the shock.
 
-{: .center}
+<!-- {: .center} -->
 ![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_novisc_2.gif)
 <!-- ![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif) -->
 
@@ -108,12 +108,12 @@ x,y \in[0,1), & \ t \in[0,1] \nonumber
 
 where the viscosity $\nu=0.01$.  We compare the PINO's results in the figures below to the simulated data and the error.  These plots depict the PINO's ability to accurately handle 2D nonlinear coupled fields.
 
-{: .center}
+<!-- {: .center} -->
 ![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
 ![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
 
 <!-- ### Linear Shallow Water Equations 2D
-{: .center}
+<!-- {: .center} -->
 ![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_f1_h.gif)
 ![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_f1_u.gif)
 ![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif) -->
@@ -137,7 +137,7 @@ x,y \in[0,1), \ t \in[0,1], \nonumber
 where the gravitational coefficient $g=1$ and the viscosity coefficient $\nu=0.002$ to prevent the formation of shocks.  Below we plot how each of these fields evolves in space and time according to the PINO predictions and to the simulated data.  We observe that the error in each of these cases is relatively small.
 
 
-{: .center}
+<!-- {: .center} -->
 ![Nonlinear Shallow Water Equations 2D eta](assets/movies/SWE_Nonlinear_eta.gif)
 ![Nonlinear Shallow Water Equations 2D u](assets/movies/SWE_Nonlinear_u.gif)
 ![Nonlinear Shallow Water Equations 2D v](assets/movies/SWE_Nonlinear_v.gif)
