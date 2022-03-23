@@ -10,7 +10,7 @@ We also provide users with a way to try out our code at Argonne's [Data and Lear
 PINOs improve upon the FNO architecture by adding physics information such as partial differential equations (PDEs), initial conditions (ICs), boundary conditions (BCs), and other conservation laws.  These are done by adding the violation of these laws into the loss function, the network can learn these laws in addition to the data. Rather than using automatic differentiation, these networks use Fourier derivatives to compute the derivatives for the PDE constraints as automatic differentiation is very memory intensive for this type of architecture. This physics knowledge enables the network to learn operators faster and with less training data. 
 
 <!-- {: .center} -->
-![Network Architecture](assets/figures/Network%20Architecture.pdf)
+![Network Architecture](assets/figures/Network%20Architecture.png)
 
 ## Results
 
