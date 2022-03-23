@@ -3,9 +3,14 @@
 In this work, we examine the applications of physics informed neural operators (PINOs).  PINOs have demonstrated excellent ability to reproduce results of various test simulations.  Here we stress test PINOs over a wide range of problems including the variations of the wave equation, Burgers equation and the shallow water equations.  The source code for this work can be found at [this repo](https://github.com/shawnrosofsky/PINO_Applications). 
 We also provide users with a way to try out our code at Argonne's [Data and Learning Hub for Science](https://www.dlhub.org).
 
-## Abstract
 
-## Methods
+## Model
+[PINOs](https://arxiv.org/abs/2111.03794) are a variation of neural operators that incorporate knowledge of physical laws into their loss functions.  PINOs have been shown reproduce the results of operators with remarkable accuracy. They employ the [Fourier neural operator (FNO)](https://arxiv.org/abs/2010.08895) architecture which applies a fast Fourier transform (FFT) to the data and applies its fully connected layers in Fourier space before performing an inverse FFT back to real space.  Moreover, this architecture has been demonstrated the ability to perform ability perform zero-shot super-resolution, predicting on higher resolution data having only seen low resolution data. The figure below illustrates the FNO architecture that we use in this study. 
+
+PINOs improve upon the FNO architecture by adding physics information such as partial differential equations (PDEs), initial conditions (ICs), boundary conditions (BCs), and other conservation laws.  These are done by adding the violation of these laws into the loss function, the network can learn these laws in addition to the data. Rather than using automatic differentiation, these networks use Fourier derivatives to compute the derivatives for the PDE constraints as automatic differentiation is very memory intensive for this type of architecture. This physics knowledge enables the network to learn operators faster and with less training data. 
+
+<!-- {: .center} -->
+![Network Architecture](assets/figures/Network%20Architecture.pdf)
 
 ## Results
 
