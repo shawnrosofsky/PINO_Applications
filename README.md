@@ -1,147 +1,171 @@
-# PINO
+# PINO Applications
 
-![PINO Diagram](docs/pino-diagram4.png)
-
-[comment]: <> (![Results on Navier Stokes equation]&#40;docs/solver-pino.png&#41;)
-
-<img src="docs/solver-pino.png" alt="Results on Navier Stokes equation" width="720" height="501"/>
-
-**Physics-informed Neural Operator for Learning Partial Differential Equation**
-
-Abstract: *Machine learning methods have recently shown promise in solving partial differential equations (PDEs). They can be classified into two broad categories: solution function approximation and operator learning. The Physics-Informed Neural Network (PINN) is an example of the former while the Fourier neural operator (FNO) is an example of the latter. Both these approaches have shortcomings. The optimization in PINN is challenging and prone to failure, especially on multi-scale dynamic systems. FNO does not suffer from this optimization issue since it carries out supervised learning on a given dataset, but obtaining such data may be too expensive or infeasible. In this work, we propose the physics-informed neural operator (PINO), where we combine the operating-learning and function-optimization frameworks, and this improves convergence rates and accuracy over both PINN and FNO models. In the operator-learning phase, PINO learns the solution operator over multiple instances of the parametric PDE family. In the test-time optimization phase, PINO optimizes the pre-trained operator ansatz for the querying instance of the PDE. Experiments show PINO outperforms previous ML methods on many popular PDE families while retaining the extraordinary speed-up of FNO compared to solvers. In particular, PINO accurately solves long temporal transient flows and  Kolmogorov flows, while PINN and other methods fail to converge.*
-## Requirements
-- Pytorch 1.8.0 or later
-- wandb
-- tqdm
-- scipy
-- h5py
-- numpy
-- DeepXDE:latest
-- tensorflow 2.4.0
-
-## Data description
-### Burgers equation
-`burgers_pino.mat`
-
-### Darcy flow 
-- spatial domain: $x\in (0,1)^2$
-- Data file: `piececonst_r421_N1024_smooth1.mat`, `piececonst_r421_N1024_smooth2.mat`
-- Raw data shape: 1024x421x421
+[In this work](https://arxiv.org/abs/2203.12634), we examine the applications of physics informed neural operators (PINOs).  PINOs have demonstrated excellent ability to reproduce results of various test simulations.  Here we stress test PINOs over a wide range of problems including the variations of the wave equation, Burgers equation and the shallow water equations.  The source code for this work can be found at [this repo](https://github.com/shawnrosofsky/PINO_Applications). 
+We also provide users with a way to try out our code at Argonne's [Data and Learning Hub for Science](https://www.dlhub.org).
 
 
-### Long roll out of Navier Stokes equation
-- spatial domain: $x\in (0, 1)^2$
-- temporal domain: $t\in \[0, 49\]$
-- forcing: $0.1(\sin(2\pi(x_1+x_2)) + \cos(2\pi(x_1+x_2)))$
-- viscosity = 0.001
+## Model
+[PINOs](https://arxiv.org/abs/2111.03794) are a variation of neural operators that incorporate knowledge of physical laws into their loss functions.  PINOs have been shown reproduce the results of operators with remarkable accuracy. They employ the [Fourier neural operator (FNO)](https://arxiv.org/abs/2010.08895) architecture which applies a fast Fourier transform (FFT) to the data and applies its fully connected layers in Fourier space before performing an inverse FFT back to real space.  Moreover, this architecture has been demonstrated the ability to perform ability perform zero-shot super-resolution, predicting on higher resolution data having only seen low resolution data. The figure below illustrates the FNO architecture that we use in this study. 
 
-Data file: `nv_V1e-3_N5000_T50.mat`, with shape 50 x 64 x 64 x 5000 
+PINOs improve upon the FNO architecture by adding physics information such as partial differential equations (PDEs), initial conditions (ICs), boundary conditions (BCs), and other conservation laws.  These are done by adding the violation of these laws into the loss function, the network can learn these laws in addition to the data. Rather than using automatic differentiation, these networks use Fourier derivatives to compute the derivatives for the PDE constraints as automatic differentiation is very memory intensive for this type of architecture. This physics knowledge enables the network to learn operators faster and with less training data. 
 
-- train set: -1-4799
-- test set: 4799-4999
-### Navier Stokes with Reynolds number 500
-- spatial domain: $x\in (0, 2\pi)^2$
-- temporal domain: $t \in \[0, 0.5\]$
-- forcing: $-4\cos(4x_2)$
-- Reynolds number: 500
+<!-- {: .center} -->
+![Network Architecture](assets/figures/Network%20Architecture.png)
 
-Train set: data of shape (N, T, X, Y) where N is the number of instances, T is temporal resolution, X, Y are spatial resolutions. 
-1. `NS_fft_Re500_T4000.npy` : 4000x64x64x65
-2. `NS_fine_Re500_T128_part0.npy`: 100x129x128x128
-3. `NS_fine_Re500_T128_part1.npy`: 100x129x128x128
+## Results
 
-Test set: data of shape (N, T, X, Y) where N is the number of instances, T is temporal resolution, X, Y are spatial resolutions. 
-1. `NS_Re500_s256_T100_test.npy`: 100x129x256x256
-2. `NS_fine_Re500_T128_part2.npy`: 100x129x128x128
+### Wave Equation 1D
+The 1D wave equation was the first test for our PINOs.  This equation computationally simple PDE that is second order in time and models a variety of different physics phenomena.  This equation is given by
 
-Configuration file format: see `.yaml` files under folder `configs` for detail. 
+\begin{align}
+    u_{tt} \left( x,t \right) + c^2 u_{xx}\left( x,t \right)&=0, \\\\ \nonumber \\\\
+    u\left( x, 0 \right) &= u_0\left(x\right), \nonumber \\\\ \nonumber \\\\
+    x\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right], \nonumber 
+\end{align}
+<!-- ![Equation: Wave Equation 1D](http://www.sciweavers.org/download/Tex2Img_1647640969.jpg) -->
 
-## Code for Burgers equation
-### Train PINO
-To run PINO for Burgers equation, use, e.g.,
-```bash 
-python3 train_burgers.py --config_path configs/pretrain/burgers-pretrain.yaml --mode train
+where $c=1$ is our wave speed.  We present results below illustrating the ability of the PINO to reconstruct the simulated result for multiple initial conditions.  The differences between the simulated data and the PINO are visually indistinguishable.
+
+<!-- {: .center} -->
+![Wave Equation 1D 0](assets/movies/Wave1D_0.gif) ![Wave Equation 1D 1](assets/movies/Wave1D_1.gif) ![Wave Equation 1D 2](assets/movies/Wave1D_2.gif)
+
+
+
+### Wave Equation 2D
+We then extended the wave equation into 2D to assess the performance into 2D.  This allow us to explore the requirements for adding the additional spatial dimension.  In 2D, the wave equation becomes
+
+\begin{align}
+ \label{eq:wave2d}
+    u_{tt} \left( x,y,t \right) + c^2 \left[ u_{xx}\left( x,y,t \right) + u_{yy}\left(x,y,t \right) \right] &=0, \\\\ \nonumber \\\\
+    u\left( x,y, 0 \right) &= u_0\left(x,y\right), \nonumber \\\\ \nonumber \\\\
+    x,y\in \left[ 0,1 \right),& \ t\in \left[0, 1 \right], \nonumber
+\end{align}
+
+where $c=1$ is the speed of the wave.
+
+We present result below demonstrating the PINO reconstructing results for the wave equation in 2D and comparing it to the simulated data as well as the error.
+
+<!-- {: .center} -->
+![Wave Equation 2D 0](assets/movies/Wave2D_0.gif)
+<!-- ![Wave Equation 2D 1](assets/movies/Wave2D_1.gif) -->
+
+### Burgers Equation 1D
+The 1D Burgers equation serves as a nonlinear test case with for a variety of numerical methods.  This allowed us to verify that our PINOs can learn and reconstruct nonlinear phenomena.  The equation is given in conservative form by
+
+\begin{align}
+\label{eq:burgers1d} 
+    u_{t}(x, t)+\partial_{x}\left[u^{2}(x, t) / 2\right] &=\nu u_{xx}(x, t), \\\\ \nonumber \\\\
+    u(x, 0) &=u_{0}(x), \nonumber \\\\ \nonumber \\\\
+    x \in[0,1), & \ t \in[0,1], \nonumber
+\end{align}
+
+where the viscosity $\nu=0.01$.  In the plots below, we illustrate the excellent agreement between the PINO predictions and the simulated values of Burgers equation.  As with the wave equation, the PINO results for the 1D Burgers equation are visually indistinguishable from the simulated data. 
+
+<!-- {: .center} -->
+![Burgers Equation 1D 0](assets/movies/Burgers1D_0.gif) ![Burgers Equation 1D 1](assets/movies/Burgers1D_1.gif) ![Burgers Equation 1D 2](assets/movies/Burgers1D_2.gif)
+
+### Burgers Equation 2D Scalar
+To verify our model can handle nonlinear phenomena in 2D, we extend the Burgers equation into 2D by assuming the field $u$ is a scalar.  The equations take the form
+
+\begin{align}
+\label{eq:burgers2d} 
+u_{t}(x, y, t)+\partial_{x}\left[u^{2}(x, y, t) / 2\right] + \partial_{y}\left[u^{2}(x, y, t) / 2\right] &=\nu \left[u_{xx}(x, y, t) +u_{yy}(x, y, t)\right], \\\\ \nonumber \\\\
+u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), & \ t \in[0,1], \nonumber
+\end{align}
+
+where the viscosity $\nu=0.01$.  The plots below the compare the PINO's predictions to the simulation data with very little error.
+
+<!-- {: .center} -->
+![Burgers Equation 2D 2](assets/movies/Burgers2D_2.gif)
+<!-- ![Burgers Equation 2D 3](assets/movies/Burgers2D_3.gif) -->
+
+### Burgers Equation 2D Inviscid
+We also looked at cases involving the inviscid Burgers equation in 2D in which we set the viscosity $\nu=0$.  This setup is known to produce shocks that can result in numerical instabilities if not handled correctly.  We used a finite volume method (FVM) to generate this data to ensure stability in the presence of shocks.  In turn, this allowed us to investigate the network's performance when processing shocks. The equation is given by
+
+\begin{align}
+\label{eq:burgers2d_inviscid} 
+u_{t}(x, y, t)+\partial_{x}\left[u^{2}(x, y, t) / 2\right] + \partial_{y}\left[u^{2}(x, y, t) / 2\right] &=0, \\\\ \nonumber \\\\
+\quad
+u(x, y, 0) &=u_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), \ t \in[0,1]. \nonumber
+\end{align}
+
+<!-- Here we embed a conservation law into the network rather than the PDE itself as our physics term, due the poor handling of the shock term -->
+
+We observe in the plots below that the PINO as able to broadly reconstruct the data in the presence of the shock.  Admittedly, the network has dificulty determing the precise location of the shock.
+
+<!-- {: .center} -->
+![Burgers Equation 2D Inviscid 2](assets/movies/Burgers2D_novisc_2.gif)
+<!-- ![Burgers Equation 2D Inviscid 3](assets/movies/Burgers2D_novisc_3.gif) -->
+
+### Burgers Equation 2D Vector
+Exploring the vectorized form of the 2D Burgers equation allowed us to test how well the model handles coupled fields.  Here, we parametrize the system with the fields $u$ and $v$. The equations take the form
+
+\begin{align}
+\label{eq:burgers2d_vec_I} 
+u_{t}(x, y, t)+u(x, y ,t)u_{x}(x, y, t) + v(x, y, t)u_{y}(x, y, t) &=\nu \left[u_{xx}(x, y, t) +u_{yy}(x, y, t) \right], \\\\ \nonumber \\\\
+\label{eq:burgers2d_vec_II} 
+v_{t}(x, y, t)+u(x, y ,t)v_{x}(x, y, t) + v(x, y, t)v_{y}(x, y, t) &=\nu \left[v_{xx}(x, y, t) +v_{yy}(x, y, t) \right], \\\\ \nonumber \\\\
+u(x, y, 0) =u_{0}(x, y),\ v(x, y, 0) = v_{0}(x, y), \nonumber \\\\ \nonumber \\\\
+x,y \in[0,1), & \ t \in[0,1] \nonumber
+\end{align}
+
+where the viscosity $\nu=0.01$.  We compare the PINO's results in the figures below to the simulated data and the error.  These plots depict the PINO's ability to accurately handle 2D nonlinear coupled fields.
+
+<!-- {: .center} -->
+![Burgers Equation 2D Vector u](assets/movies/Burgers2D_coupled_u.gif)
+![Burgers Equation 2D Vector v](assets/movies/Burgers2D_coupled_v.gif)
+
+<!-- ### Linear Shallow Water Equations 2D
+{: .center}
+![Linear Shallow Water Equations 2D h](assets/movies/SWE_Linear_f1_h.gif)
+![Linear Shallow Water Equations 2D u](assets/movies/SWE_Linear_f1_u.gif)
+![Linear Shallow Water Equations 2D v](assets/movies/SWE_Linear_f1_v.gif) -->
+
+### Nonlinear Shallow Water Equations 2D
+To examine the properties of PINOs with 3 coupled nonlinear equations, we examined the ability of the networks to reproduce the nonlinear shallow water equations.  These equations are applicable in a number of physical scenerios including tsunami modeling.  We assumed that the total fluid column height $\eta(x,y,t)$ was composed of a mean height plus some perturbation, but the initial velicity fields $u(x,y,t)$ and $v(x,y,t)$ were initially zero.  These equations are given by
+
+\begin{align}
+\label{eq:swe_nonlin_I}
+\frac{\partial(\eta)}{\partial t}+\frac{\partial(\eta u)}{\partial x}+\frac{\partial(\eta v)}{\partial y}&=0,  \\\\ \nonumber \\\\
+\label{eq:swe_nonlin_II}
+\frac{\partial(\eta u)}{\partial t}+\frac{\partial}{\partial x}\left(\eta u^{2}+\frac{1}{2} g \eta^{2}\right)+\frac{\partial(\eta u v)}{\partial y}&=\nu\left(u_{xx} + u_{yy}\right), \\\\ \nonumber \\\\
+\label{eq:swe_nonlin_III}
+\frac{\partial(\eta v)}{\partial t}+\frac{\partial(\eta u v)}{\partial x}+\frac{\partial}{\partial y}\left(\eta v^{2}+\frac{1}{2} g \eta^{2}\right)&=\nu\left(v_{xx} + v_{yy}\right), \\\\ \nonumber \\\\
+\end{align}
+\begin{align}
+\textrm{with} \quad \eta(x,y,0) = \eta_{0}(x,y),\ u(x,y,0)=0,\ v(x,y,0)=0,\ \quad 
+x,y \in[0,1), \ t \in[0,1], \nonumber
+\end{align}
+
+where the gravitational coefficient $g=1$ and the viscosity coefficient $\nu=0.002$ to prevent the formation of shocks.  Below we plot how each of these fields evolves in space and time according to the PINO predictions and to the simulated data.  We observe that the error in each of these cases is relatively small.
+
+
+<!-- {: .center} -->
+![Nonlinear Shallow Water Equations 2D eta](assets/movies/SWE_Nonlinear_eta.gif)
+![Nonlinear Shallow Water Equations 2D u](assets/movies/SWE_Nonlinear_u.gif)
+![Nonlinear Shallow Water Equations 2D v](assets/movies/SWE_Nonlinear_v.gif)
+
+
+
+<!-- Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+
+```markdown
+Syntax highlighted code block
+
+# Header 1
+## Header 2
+### Header 3
+
+- Bulleted
+- List
+
+1. Numbered
+2. List
+
+**Bold** and _Italic_ and `Code` text
+
+[Link](url) and ![Image](src)
 ```
-
-To test PINO for burgers equation, use, e.g., 
-```bash
-python3 train_burgers.py --config_path configs/test/burgers.yaml --mode test
-```
-
-## Code for Darcy Flow
-
-### Operator learning
-To run PINO for Darcy Flow, use, e.g., 
-```bash
-python3 train_operator.py --config_path configs/pretrain/Darcy-pretrain.yaml
-```
-To evaluate operator for Darcy Flow, use, e.g., 
-```bash
-python3 eval_operator.py --config_path configs/test/darcy.yaml
-```
-
-### Test-time optimization
-To do test-time optimization for Darcy Flow, use, e.g., 
-```bash
-python3 run_pino2d.py --config_path configs/finetune/Darcy-finetune.yaml --start [starting index] --stop [stopping index]
-```
-
-### Baseline
-To run DeepONet, use, e.g., 
-```bash
-python3 deeponet.py --config_path configs/pretrain/Darcy-pretrain-deeponet.yaml --mode train 
-```
-To test DeepONet, use, e.g., 
-```bash
-python3 deeponet.py --config_path configs/test/darcy.yaml --mode test
-```
-
-
-## Code for Navier Stokes equation
-### Train PINO for short time period
-To run operator learning, use, e.g., 
-```bash
-python3 train_operator.py --config_path configs/pretrain/Re500-pretrain-05s-4C0.yaml
-```
-To evaluate trained operator, use
-```bash
-python3 eval_operator.py --config_path configs/test/Re500-05s.yaml
-```
-To run test-time optimization, use
-```bash
-python3 train_PINO3d.py --config_path configs/***.yaml 
-```
-
-To train Navier Stokes equations sequentially without running `train_PINO3d.py` multiple times, use
-
-```bash
-python3 run_pino3d.py --config_path configs/[configuration file name].yaml --start [index of the first data] --stop [which data to stop]
-```
-
-
-### Baseline for short time period
-To train DeepONet, use 
-```bash
-python3 deeponet.py --config_path configs/[configuration file].yaml --mode train
-```
-
-To test DeepONet, use 
-```bash
-python3 deeponet.py --config_path configs/[configuration file].yaml --mode test
-```
-
-To train and test PINNs, use, e.g.,  
-```bash
-python3 nsfnet.py --config_path configs/Re500-pinns-05s.yaml --start [starting index] --stop [stopping index]
-```
-### Baseline for long roll out
-To train and test PINNs, use
-```bash
-python3 nsfnet.py --config_path configs/scratch/NS-50s.yaml --long --start [starting index] --stop [stopping index]
-```
-
-### Pseudospectral solver for Navier Stokes equation
-To run solver, use 
-```bash
-python3 run_solver.py --config_path configs/Re500-0.5s.yaml
-```
+ -->
