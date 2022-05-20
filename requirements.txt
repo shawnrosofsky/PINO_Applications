@@ -1,0 +1,15 @@
+-f https://download.pytorch.org/whl/cu113
+torch==1.11.0
+functorch==0.1.1
+h5py==2.10.0
+imageio==2.9.0
+ipython==8.3.0
+mat73==0.52
+matplotlib==3.3.2
+numpy==1.19.2
+ptflops==0.6.9
+pyDOE==0.3.8
+PyYAML==6.0
+scipy==1.5.2
+tqdm==4.50.2
+wandb==0.12.6
