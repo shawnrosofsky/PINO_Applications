@@ -1,7 +1,34 @@
 import os
 import numpy as np
 import torch
+import yaml
+import traceback
 
+
+def load_checkpoint(model, ckpt_path, optimizer=None, device=None):
+    try:
+        if device is None:
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        ckpt = torch.load(ckpt_path, map_location=device)
+        model.load_state_dict(ckpt['model'])
+        print('Weights loaded from %s' % ckpt_path)
+        if optimizer is not None:
+            try:
+                optimizer.load_state_dict(ckpt['optim'])
+                print('Optimizer loaded from %s' % ckpt_path)
+            except: traceback.print_exc()
+            
+    except:
+        traceback.print_exc()
+
+def update_config(config, file):
+    with open(file, 'w') as f:
+        config_updated = yaml.dump(config, f)
+        
+def load_config(file):
+    with open(file, 'r') as f:
+        config = yaml.load(f, yaml.FullLoader)
+    return config
 
 def vor2vel(w, L=2 * np.pi):
     '''

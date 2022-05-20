@@ -1,6 +1,8 @@
 import scipy.io
 import numpy as np
 import mat73
+import os
+import h5py
 
 try:
     from pyDOE import lhs
@@ -310,4 +312,174 @@ class DarcyFlow(Dataset):
         return torch.cat([fa.unsqueeze(2), self.mesh], dim=2), self.u[item]
 
 
+
+class DataLoader1D(object):
+    def __init__(self, x_data, y_data, nx=128, nt=100, sub=1, sub_t=1, new=True):
+#         dataloader = MatReader(datapath)
+        self.sub = sub
+        self.sub_t = sub_t
+        s = nx
+        # if nx is odd
+        if (s % 2) == 1:
+            s = s - 1
+        self.s = s // sub
+
+        self.T = nt // sub_t
+        self.new = new
+        if new:
+            self.T += 1
+        self.x_data = x_data[:, 0:s:sub]
+        self.y_data = y_data[:, 0:self.T:sub_t, 0:s:sub]
+
+    def make_loader(self, n_sample, batch_size, start=0, train=True):
+        Xs = self.x_data[start:start + n_sample]
+        ys = self.y_data[start:start + n_sample]
+
+        if self.new:
+            gridx = torch.tensor(np.linspace(0, 1, self.s + 1)[:-1], dtype=torch.float)
+            gridt = torch.tensor(np.linspace(0, 1, self.T), dtype=torch.float)
+        else:
+            gridx = torch.tensor(np.linspace(0, 1, self.s), dtype=torch.float)
+            gridt = torch.tensor(np.linspace(0, 1, self.T + 1)[1:], dtype=torch.float)
+        gridx = gridx.reshape(1, 1, self.s)
+        gridt = gridt.reshape(1, self.T, 1)
+
+        Xs = Xs.reshape(n_sample, 1, self.s).repeat([1, self.T, 1])
+        Xs = torch.stack([Xs, gridx.repeat([n_sample, self.T, 1]), gridt.repeat([n_sample, 1, self.s])], dim=3)
+        dataset = torch.utils.data.TensorDataset(Xs, ys)
+        if train:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        else:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+        return loader
+    
+    
+class DataLoader2D(object):
+    def __init__(self, data, nx=128, nt=100, sub=1, sub_t=1):
+        self.sub = sub
+        self.sub_t = sub_t            
+        s = nx
+        # if nx is odd
+        if (s % 2) == 1:
+            s = s - 1
+        self.S = s // sub
+        self.T = nt // sub_t
+        self.T += 1
+        data = data[:, 0:self.T:sub_t, 0:self.S:sub, 0:self.S:sub]
+        self.data = data.permute(0, 2, 3, 1)
+        
+    def make_loader(self, n_sample, batch_size, start=0, train=True):
+        a_data = self.data[start:start + n_sample, :, :, 0].reshape(n_sample, self.S, self.S)
+        u_data = self.data[start:start + n_sample].reshape(n_sample, self.S, self.S, self.T)
+        gridx, gridy, gridt = get_grid3d(self.S, self.T)
+        a_data = a_data.reshape(n_sample, self.S, self.S, 1, 1).repeat([1, 1, 1, self.T, 1])
+        a_data = torch.cat((gridx.repeat([n_sample, 1, 1, 1, 1]),
+                            gridy.repeat([n_sample, 1, 1, 1, 1]),
+                            gridt.repeat([n_sample, 1, 1, 1, 1]),
+                            a_data), dim=-1)
+        dataset = torch.utils.data.TensorDataset(a_data, u_data)
+        if train:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        else:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+        return loader
+    
+class DataLoader2D_coupled(object):
+    def __init__(self, data, nx=128, nt=100, sub=1, sub_t=1, nfields=2):
+#         dataloader = MatReader(datapath)
+        self.sub = sub
+        self.sub_t = sub_t
+        self.nfields = nfields
+        s = nx
+        # if nx is odd
+        if (s % 2) == 1:
+            s = s - 1
+        self.S = s // sub
+        self.T = nt // sub_t
+        self.T += 1
+        data = data[:, 0:self.T:sub_t, 0:s:sub, 0:s:sub]
+        self.data = data.permute(0, 2, 3, 1, 4)
+        
+    def make_loader(self, n_sample, batch_size, start=0, train=True):
+        a_data = self.data[start:start + n_sample, :, :, 0].reshape(n_sample, self.S, self.S, self.nfields)
+        u_data = self.data[start:start + n_sample].reshape(n_sample, self.S, self.S, self.T, self.nfields)
+#         Xs = self.x_data[start:start + n_sample].reshape(n_sample, self.S, self.S)
+#         ys = self.y_data[start:start + n_sample].reshape(n_sample, self.S, self.S, self.T)
+        gridx, gridy, gridt = get_grid3d(self.S, self.T)
+        a_data = a_data.reshape(n_sample, self.S, self.S, 1, self.nfields).repeat([1, 1, 1, self.T, 1])
+        a_data = torch.cat((gridx.repeat([n_sample, 1, 1, 1, 1]),
+                            gridy.repeat([n_sample, 1, 1, 1, 1]),
+                            gridt.repeat([n_sample, 1, 1, 1, 1]),
+                            a_data), dim=-1)
+        dataset = torch.utils.data.TensorDataset(a_data, u_data)
+        if train:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        else:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+        return loader
+    
+class DataLoader2D_swe(object):
+    def __init__(self, data, nx=128, nt=100, sub=1, sub_t=1, tend=1.0, nin=1, nout=3):
+        self.sub = sub
+        self.sub_t = sub_t
+        self.tend = tend
+
+        self.nin = nin
+        self.nout = nout
+        
+        s = nx
+        # if nx is odd
+        if (s % 2) == 1:
+            s = s - 1
+        self.S = s // sub
+        self.T = nt // sub_t
+        self.T += 1
+        data = data[:, 0:self.T:sub_t, 0:s:sub, 0:s:sub]
+        self.data = data.permute(0, 2, 3, 1, 4)
+        
+    def make_loader(self, n_sample, batch_size, start=0, train=True):
+        a_data = self.data[start:start + n_sample, :, :, 0, :self.nin].reshape(n_sample, self.S, self.S, self.nin)
+        u_data = self.data[start:start + n_sample].reshape(n_sample, self.S, self.S, self.T, self.nout)
+        gridx, gridy, gridt = get_grid3d(self.S, self.T, time_scale=self.tend)
+        a_data = a_data.reshape(n_sample, self.S, self.S, 1, self.nin).repeat([1, 1, 1, self.T, 1])
+        a_data = torch.cat((gridx.repeat([n_sample, 1, 1, 1, 1]),
+                            gridy.repeat([n_sample, 1, 1, 1, 1]),
+                            gridt.repeat([n_sample, 1, 1, 1, 1]),
+                            a_data), dim=-1)
+        dataset = torch.utils.data.TensorDataset(a_data, u_data)
+        if train:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+        else:
+            loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
+        return loader
+
+
+def get_files(filelist):
+    file_dir = os.path.split(filelist)[0]
+    files = []
+    with open(filelist, "r") as f:
+        for line in f.readlines():
+            file = os.path.join(file_dir, line[:-1])
+            files.append(file)
+    return files
+
+def load_data(files, device=None):
+    file0 = files[0]
+    N = len(files)
+    # get coordinates and shape
+    with h5py.File(file0, 'r') as f0:
+        params = f0['params']
+        x1 = torch.tensor(params['x'][:], device=device).reshape((-1, 1))
+        x2 = torch.tensor(params['y'][:], device=device).reshape((-1, 1))
+        t = torch.tensor(params['times'][:], device=device).reshape((-1, 1))
+    Nx = len(x1)
+    Ny = len(x2)
+    Nt = len(t)
+    data = torch.zeros(N, Nx, Ny, Nt, device=device)
+    for i, file in enumerate(files):
+        with h5py.File(file, 'r') as f:
+            params = f['params']
+            data[i] = torch.tensor(f['u'][:], device=device)
+    data = data.permute(0, 3, 1, 2)
+    return data
 
